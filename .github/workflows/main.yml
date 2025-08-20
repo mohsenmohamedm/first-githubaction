@@ -12,5 +12,11 @@ jobs:
     steps:
       - name: print a welcome message
         run: echo "Hello, this is my first workflow running on push to main branch!"
+        
       - name: Checkout code
         uses: actions/checkout@v5.0.0
+        
+      - name: list repo files
+        run: ls -la
+
+      
