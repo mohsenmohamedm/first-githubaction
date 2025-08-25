@@ -1,0 +1,28 @@
+on:                     # الأحداث اللي هتشغّل الوركفلو
+  push:                 # يشتغل لما تعمل push
+    branches:
+      - main            # بس لو الـpush على فرع main
+      - "release/**"    # أو أي فرع اسمه يبدأ release/ (زي release/v1.2)
+    paths:
+      - "src/**"        # وكمان بشرط إن الملفات المتغيرة تكون داخل src/
+                        # (glob pattern: ** يعني أي عمق مجلدات)
+
+  pull_request:         # يشتغل لما يتفتح/يتحدّث PR
+    branches:
+      - main
+      - "release/**"    # أي PR متوجّه للفروع دي هيشغّل الوركفلو
+                        # (لاحظ: هنا مفيش paths filter، فـأي تغيير هيشغّله طالما الـPR رايح للفروع دي)
+
+jobs:
+  test:                 # اسم الـjob
+    runs-on: ubuntu-latest   # نوع الـRunner (ماكينة لينكس جاهزة من GitHub)
+    steps:                   # خطوات متسلسلة
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+        # يسحب كود الريبو داخل الـRunner علشان الخطوات اللي بعده تقدر تشتغل عليه
+
+      - name: Run tests
+        run: npm test
+        # يشغّل سكريبت الاختبارات. الافتراضي Shell= bash.
+        # هيحتاج Node/npm موجودين (عادة متوفرين)،
+        # لكن الأفضل تحدد نسخة Node صراحة (نصيحة تحت).
